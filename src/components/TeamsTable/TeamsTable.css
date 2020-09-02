@@ -5,10 +5,25 @@ td > img {
   border: 1px solid #cccccc;
 }
 
-.selected button {
-  color: red;
+.ant-table-tbody > tr > td:nth-child(n + 3) {
+  padding-left: 40px;
 }
 
-.not-selected button {
-  color: green;
+.selected button {
+  color: red;
+  border: 1px solid red;
+}
+
+button {
+  border-radius: 50%;
+  border: 1px solid black;
+  background: none;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.5s ease;
+}
+
+button:hover {
+  background-color: rgba(214, 209, 209, 0.548);
 }

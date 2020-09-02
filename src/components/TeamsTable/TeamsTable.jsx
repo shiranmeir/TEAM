@@ -1,30 +1,55 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Button } from "antd";
+import { Table } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "./TeamsTable.css";
-
-const URL = "http://api.football-data.org/v2/teams/18";
-const API = "1fb858a30473480a8fcc2a826898a6fa";
+import { config } from "../../utils/config.json";
 
 const TeamsTable = () => {
-  const getState = localStorage.getItem("favorites") || "0";
   const [teams, setTeams] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState();
 
   const getInitialState = () => {
-    console.log(getState);
-    let stateArray = getState.split(",").map(Number);
-    console.log(stateArray);
-    setFavorites(stateArray);
-    console.log(favorites);
+    const isFavoriteExist = JSON.parse(localStorage.getItem("favorites"));
+    if (!isFavoriteExist) {
+      localStorage.setItem("favorites", JSON.stringify([0]));
+    }
+    setFavorites(isFavoriteExist);
   };
 
   useEffect(() => {
     getData();
     getInitialState();
   }, []);
+
+  const handleFavoriteClick = async (id) => {
+    const myList = JSON.parse(localStorage.getItem("favorites"));
+    myList.includes(id.key)
+      ? myList.splice(myList.indexOf(id.key), 1)
+      : myList.push(id.key);
+    localStorage.setItem("favorites", JSON.stringify(myList));
+    setFavorites(myList);
+  };
+
+  const getData = async () => {
+    const dataFromApi = await axios.get(config.url, {
+      headers: { "X-Auth-Token": config.api_key },
+    });
+    const allTeams = dataFromApi.data.teams.map((team) => {
+      return {
+        key: team.id,
+        name: team.name,
+        yearFounded: team.founded,
+        crest: team.crestUrl ? (
+          <img src={team.crestUrl} alt="No Crest Available" />
+        ) : (
+          <div>-</div>
+        ),
+      };
+    });
+    setTeams(allTeams);
+  };
 
   const columns = [
     {
@@ -43,49 +68,13 @@ const TeamsTable = () => {
       title: "My Favorite",
       render: () => (
         <div className="heart-icon">
-          <Button shape="circle" icon={<HeartOutlined />} />
+          <button>
+            <HeartOutlined />
+          </button>
         </div>
       ),
     },
   ];
-
-  const handleFavoriteClick = (id) => {
-    if (favorites) {
-      const idExist = favorites.includes(id.key);
-      if (idExist) {
-        favorites.splice(favorites.indexOf(id.key), 1);
-        localStorage.setItem("favorites", favorites);
-        setFavorites(favorites);
-      } else {
-        favorites.push(id.key);
-        localStorage.setItem("favorites", favorites);
-        setFavorites(favorites);
-      }
-    }
-  };
-
-  const getData = async () => {
-    const data = await axios.get(
-      "http://api.football-data.org/v2/competitions/2000/teams",
-      {
-        headers: {
-          "X-Auth-Token": "1fb858a30473480a8fcc2a826898a6fa",
-        },
-      }
-    );
-
-    const dataArray = data.data.teams.map((d) => {
-      const container = {};
-      container.key = d.id;
-      container.name = d.name;
-      container.yearFounded = d.founded;
-      d.crestUrl
-        ? (container.crest = <img src={d.crestUrl} alt="No Crest Available" />)
-        : (container.crest = <div>-</div>);
-      return container;
-    });
-    setTeams(dataArray);
-  };
 
   return (
     <div className="teams-table">
@@ -96,13 +85,10 @@ const TeamsTable = () => {
         onRow={(record) => ({
           onClick: () => {
             handleFavoriteClick(record);
-            console.log(favorites);
           },
         })}
         rowClassName={(record) =>
-          favorites && favorites.includes(record.key)
-            ? "selected"
-            : "not-selected"
+          favorites.includes(record.key) ? "selected" : "not-selected"
         }
       />
     </div>

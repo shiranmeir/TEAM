@@ -59,10 +59,13 @@ const TeamsTable = () => {
     {
       title: "Name",
       dataIndex: "name",
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortDirections: ["descend", "ascend"],
     },
     {
       title: "Year Founded",
       dataIndex: "yearFounded",
+      sorter: (a, b) => a.yearFounded - b.yearFounded,
     },
     {
       title: "My Favorite",

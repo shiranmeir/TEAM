@@ -4,7 +4,7 @@ import "./Navbar.css";
 export default function Navbar() {
   return (
     <header className="navbar">
-      <div className="navbar__title">Team.</div>
+      <div className="navbar-title">Team.</div>
     </header>
   );
 }

@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { config } from "../../utils/config.json";
 import { Table } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "./TeamsTable.css";
-import { config } from "../../utils/config.json";
 
 const TeamsTable = () => {
   const [teams, setTeams] = useState([]);
   const [favorites, setFavorites] = useState();
 
+  useEffect(() => {
+    getData();
+    getInitialState();
+  }, []);
+
   const getInitialState = () => {
-    const isFavoriteExist = JSON.parse(localStorage.getItem("favorites"));
-    if (!isFavoriteExist) {
+    const getFavoriteStorage = JSON.parse(localStorage.getItem("favorites"));
+    if (!getFavoriteStorage) {
       localStorage.setItem("favorites", JSON.stringify([0]));
     }
-    setFavorites(isFavoriteExist);
+    setFavorites(getFavoriteStorage);
   };
 
-  const handleFavoriteClick = async (id) => {
-    const myList = JSON.parse(localStorage.getItem("favorites"));
-    myList.includes(id.key)
-      ? myList.splice(myList.indexOf(id.key), 1)
-      : myList.push(id.key);
-    localStorage.setItem("favorites", JSON.stringify(myList));
-    setFavorites(myList);
+  const handleFavoriteClick = (record) => {
+    const myFavoriteList = JSON.parse(localStorage.getItem("favorites"));
+    myFavoriteList.includes(record.key)
+      ? myFavoriteList.splice(myFavoriteList.indexOf(record.key), 1)
+      : myFavoriteList.push(record.key);
+    localStorage.setItem("favorites", JSON.stringify(myFavoriteList));
+    setFavorites(myFavoriteList);
   };
 
   const getData = async () => {
-    const dataFromApi = await axios.get(config.url, {
+    const getAPIData = await axios.get(config.url, {
       headers: { "X-Auth-Token": config.api_key },
     });
-    const allTeams = dataFromApi.data.teams.map((team) => {
+    const allTeams = getAPIData.data.teams.map((team) => {
       return {
         key: team.id,
         name: team.name,
@@ -45,11 +50,6 @@ const TeamsTable = () => {
     });
     setTeams(allTeams);
   };
-
-  useEffect(() => {
-    getData();
-    getInitialState();
-  }, []);
 
   const columns = [
     {

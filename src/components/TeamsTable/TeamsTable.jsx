@@ -9,6 +9,7 @@ import "./TeamsTable.css";
 const TeamsTable = () => {
   const [teams, setTeams] = useState([]);
   const [favorites, setFavorites] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getData();
@@ -49,6 +50,7 @@ const TeamsTable = () => {
       };
     });
     setTeams(allTeams);
+    setIsLoading(false);
   };
 
   const columns = [
@@ -85,6 +87,8 @@ const TeamsTable = () => {
         columns={columns}
         dataSource={teams}
         scroll={{ y: 400 }}
+        showSorterTooltip={false}
+        loading={isLoading}
         onRow={(record) => ({
           onClick: () => {
             handleFavoriteClick(record);

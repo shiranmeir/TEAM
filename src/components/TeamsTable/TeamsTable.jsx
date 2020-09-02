@@ -18,11 +18,6 @@ const TeamsTable = () => {
     setFavorites(isFavoriteExist);
   };
 
-  useEffect(() => {
-    getData();
-    getInitialState();
-  }, []);
-
   const handleFavoriteClick = async (id) => {
     const myList = JSON.parse(localStorage.getItem("favorites"));
     myList.includes(id.key)
@@ -50,6 +45,11 @@ const TeamsTable = () => {
     });
     setTeams(allTeams);
   };
+
+  useEffect(() => {
+    getData();
+    getInitialState();
+  }, []);
 
   const columns = [
     {
@@ -88,7 +88,9 @@ const TeamsTable = () => {
           },
         })}
         rowClassName={(record) =>
-          favorites.includes(record.key) ? "selected" : "not-selected"
+          favorites && favorites.includes(record.key)
+            ? "selected"
+            : "not-selected"
         }
       />
     </div>

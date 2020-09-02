@@ -9,22 +9,22 @@ const URL = "http://api.football-data.org/v2/teams/18";
 const API = "1fb858a30473480a8fcc2a826898a6fa";
 
 const TeamsTable = () => {
-  // const getArray = JSON.parse(localStorage.getItem("favorites") || "0");
-  const getFavorites = () => {
-    return localStorage.getItem("favorites") || "0";
-  };
+  const getState = localStorage.getItem("favorites") || "0";
   const [teams, setTeams] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
+  const getInitialState = () => {
+    console.log(getState);
+    let stateArray = getState.split(",").map(Number);
+    console.log(stateArray);
+    setFavorites(stateArray);
+    console.log(favorites);
+  };
+
   useEffect(() => {
     getData();
-    // doit();
+    getInitialState();
   }, []);
-
-  // const doit = () => {
-  //   const list = getFavorites();
-  //   setFavorites([...list]);
-  // };
 
   const columns = [
     {

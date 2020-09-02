@@ -24,7 +24,8 @@ td.ant-table-column-sort {
 
 button {
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid #434344;
+  color: #434344;
   background: none;
   text-decoration: none;
   cursor: pointer;
@@ -33,7 +34,7 @@ button {
 }
 
 button:hover {
-  background-color: rgba(214, 209, 209, 0.548);
+  background-color: #d6d1d18c;
 }
 
 @media only screen and (max-width: 600px) {

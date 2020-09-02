@@ -1,3 +1,9 @@
 .board {
   padding: 20px 100px;
 }
+
+@media only screen and (max-width: 600px) {
+  .board {
+    padding: 2px 2px;
+  }
+}

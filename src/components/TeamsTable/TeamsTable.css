@@ -27,3 +27,15 @@ button {
 button:hover {
   background-color: rgba(214, 209, 209, 0.548);
 }
+
+@media only screen and (max-width: 600px) {
+  .ant-table-cell {
+    font-size: 11px;
+  }
+  button {
+    font-size: 13px;
+  }
+  .ant-table-tbody > tr > td:nth-child(n + 3) {
+    padding-left: 20px;
+  }
+}

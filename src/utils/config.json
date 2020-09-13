@@ -1,6 +1,6 @@
 {
   "config": {
-    "url": "http://api.football-data.org/v2/competitions/2021/teams",
+    "url": "https://api.football-data.org/v2/competitions/2021/teams",
     "api_key": "1fb858a30473480a8fcc2a826898a6fa"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "homepage": "http://shiranmeir.github.io/TEAM",
-  "name": "teams",
+  "homepage": "http://shiranmeir.github.io/SHOPPING-LIST",
+  "name": "shopping-list",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
